@@ -24,7 +24,7 @@ object CliParser:
   class SourceFilesOption extends CliOption[List[SourceFile]](Nil):
     val name = "source-files"
     def receive(arg: String): Option[Outcome] =
-      if arg.endsWith(".scala") then
+      if arg.endsWith(".scala") || arg.endsWith(".cavia") then
         this._value ++= List(SourceFile.fromPath(arg))
         Some(Ok)
       else None
