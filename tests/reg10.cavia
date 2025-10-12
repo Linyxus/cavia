@@ -1,0 +1,23 @@
+struct Ref(var data: i32)
+
+enum AList:
+  case ANil()
+  case ACons(head: i32, tail: Ar[AList]^)
+
+def printAList(xs: Ar[AList]^): Unit = xs match
+  case ANil() => ()
+  case ACons(h, t) =>
+    printAList(t)
+    #i32println(h)
+
+def main(): Unit = arena[Unit]: zone =>
+  val t1 = zone.ANil()
+  val t2 = zone.ACons(3, t1)
+  val t3 = zone.ACons(2, t2)
+  val t4 = zone.ACons(1, t3)
+  val t5 = zone.ACons(0, t4)
+  printAList(t5)
+  printAList(t4)
+  printAList(t3)
+
+  val xs: Ar[AList]^{zone} = t5

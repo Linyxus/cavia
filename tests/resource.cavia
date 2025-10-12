@@ -1,0 +1,12 @@
+struct Resource(var data: i32)
+
+def drop(consume x: Resource^): Unit = ()
+
+def use(x: Resource^): Unit =
+  #i32println(x.data)
+
+def main(): Unit =
+  val a = Resource(42)
+  use(a)
+  drop(a)
+  use(a)
