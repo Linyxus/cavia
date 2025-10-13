@@ -110,6 +110,14 @@ object Compiler:
           printParser = p.printParserOption.get,
         )
         CompilerAction.Compile(p.sourceFilesOption.get, config)
+      case "repl" :: moreArgs => hopefully:
+        val p = parseConfig(moreArgs).!!
+        val config = CompilerConfig(
+          printIds = p.printIdsOption.get,
+          includeStd = p.includeStdOption.get,
+          printParser = p.printParserOption.get,
+        )
+        CompilerAction.Repl()
       case  cmd :: _ => Left(s"Invalid command: $cmd")
 
   def run(action: CompilerAction): Unit =
@@ -149,6 +157,24 @@ object Compiler:
           println("--- compilation succeeded")
         else
           println("--- compilation failed")
+      case CompilerAction.Repl() => startRepl()
+
+  def startRepl(): Unit =
+    println("Welcome to Cavia REPL")
+    println("Type ':quit' or press Ctrl+D to exit")
+
+    def loop(): Unit =
+      print("cavia> ")
+      val input = scala.io.StdIn.readLine()
+      if input == null then
+        println("\nGoodbye!")
+      else if input == ":quit" || input == ":exit" then
+        println("Goodbye!")
+      else
+        println(input)
+        loop()
+
+    loop()
 
   type ParseResult[+X] = Either[Tokenizer.Error | Parser.ParseError, X]
 
