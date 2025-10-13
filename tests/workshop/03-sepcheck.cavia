@@ -5,6 +5,13 @@ def swap(a: Ref^, b: Ref^): Unit =
   a.data = b.data
   b.data = t
 
+def read(x: Ref^ro): i32 =
+  //x.data = 12345
+  x.data
+
+def write(x: Ref^, newValue: i32): Unit =
+  x.data = newValue
+
 def main(): Unit =
   val a = Ref(0)
   val b = Ref(0)
@@ -13,3 +20,6 @@ def main(): Unit =
 
   //val t1 = a
   //swap(a, t1)
+
+  par(() => #i32println(read(a)), () => #i32println(read(a)))  // ok
+  //par(() => #i32println(read(a)), () => write(a, 42))  // no

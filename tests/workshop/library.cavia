@@ -21,3 +21,7 @@ def runConsoleApp[T](op: Console^ => T): T =
   val console = Console()
   val result = op(console)
   result
+
+// A placeholder for signature
+def par(f: () => Unit, g: () => Unit): Unit =
+  ()
