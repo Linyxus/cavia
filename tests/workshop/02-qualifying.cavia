@@ -1,0 +1,16 @@
+struct Ref(var data: i32)
+
+def read(x: Ref^ro): i32 =
+  //x.data = 12345
+  x.data
+
+def write(x: Ref^, newValue: i32): Unit =
+  x.data = newValue
+
+def main(): Unit = runConsoleApp[Unit]: console =>
+  console.putStrLn("Qualifying capabilities")
+
+  val a = Ref(0)
+
+  //val f = () => read(a)
+  //val g = () => write(a, 42)

@@ -1,0 +1,7 @@
+def main(): Unit = runConsoleApp[Unit]: (console: Console^) =>
+  console.putStrLn("hello, world")
+  val greet = () =>
+    console.putStrLn("Hey there!")
+
+  // val notPure: () ->{} Unit =
+  //   console.putStrLn("oh no")

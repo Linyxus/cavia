@@ -1,0 +1,15 @@
+struct Ref(var data: i32)
+
+def swap(a: Ref^, b: Ref^): Unit =
+  val t = a.data
+  a.data = b.data
+  b.data = t
+
+def main(): Unit =
+  val a = Ref(0)
+  val b = Ref(0)
+  swap(a, b)
+  //swap(a, a)
+
+  //val t1 = a
+  //swap(a, t1)

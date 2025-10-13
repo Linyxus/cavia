@@ -1,0 +1,23 @@
+module lib
+
+type String = array[char]
+
+struct Console()
+
+extension (console: Console^)
+  def putChar(ch: char): Unit = #putchar(ch)
+  def putStr(s: String^): Unit =
+    def loop(i: i32): Unit =
+      if i < s.size then
+        console.putChar(s(i))
+        loop(i + 1)
+    loop(0)
+  def putStrLn(s: String^): Unit =
+    console.putStr(s)
+    console.putChar('\n')
+  def showInt(i: i32): Unit = #i32println(i)
+
+def runConsoleApp[T](op: Console^ => T): T =
+  val console = Console()
+  val result = op(console)
+  result

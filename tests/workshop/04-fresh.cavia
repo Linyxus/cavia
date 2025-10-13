@@ -1,0 +1,8 @@
+struct Ref(var data: i32)
+struct RefPair(a: Ref^, b: Ref^)
+
+def drop(consume x: Ref^): Unit = ()
+
+def main(): Unit =
+  val a = Ref(0)
+  val f = () => a.data = a.data + 42
