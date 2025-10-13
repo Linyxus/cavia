@@ -10,6 +10,8 @@ object CompilerSettings:
     case Codegen(sourceFiles: List[SourceFile], config: CompilerConfig)
     /** Typecheck, generate .wat code, then compile to an optimized .wasm binary. */
     case Compile(sourceFiles: List[SourceFile], config: CompilerConfig)
+    /** Start the repl */
+    case Repl()
     /** Print the help message. */
     case Help
 
