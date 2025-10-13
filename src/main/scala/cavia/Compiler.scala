@@ -122,6 +122,10 @@ object Compiler:
         CompilerAction.Repl()
       case  cmd :: _ => Left(s"Invalid command: $cmd")
 
+  inline def maybeIncludeStdlib(files: List[SourceFile], addStdlib: Boolean): List[SourceFile] =
+    if addStdlib then files :+ stdlib
+    else files
+
   def run(action: CompilerAction): Unit =
     action match
       case CompilerAction.Help =>
@@ -129,9 +133,8 @@ object Compiler:
         println("       caviac gen <source files>")
         println("       caviac compile <source files>")
       case CompilerAction.Check(sources, config) =>
-        val sources1 = sources :+ stdlib
         val runner = ParseStep(config) `fuse` TypecheckStep(config) `fuse` PrintModulesStep("typecheck", config)
-        val res = runner.execute(sources1)
+        val res = runner.execute(maybeIncludeStdlib(sources, config.includeStd))
         res match
           case Some(modules) =>
           case None =>
@@ -141,7 +144,7 @@ object Compiler:
             `fuse` TypecheckStep(config)
             `fuse` PrintModulesStep("typecheck", config)
             `fuse` CodegenStep("out.wat")
-        val res = runner.execute(sources :+ stdlib)
+        val res = runner.execute(maybeIncludeStdlib(sources, config.includeStd))
         res match
           case Some(_) =>
             println("--- codegen successful")
@@ -154,7 +157,7 @@ object Compiler:
             `fuse` PrintModulesStep("typecheck", config)
             `fuse` CodegenStep("out.wat")
             `fuse` CompileStep("out.wat", "out.wasm")
-        val res = runner.execute(sources :+ stdlib)
+        val res = runner.execute(maybeIncludeStdlib(sources, config.includeStd))
         if res.isDefined then
           println("--- compilation succeeded")
         else
