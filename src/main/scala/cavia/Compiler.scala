@@ -13,6 +13,8 @@ import codegen.*
 import rechecking.*
 import java.nio.file.*
 import core.ast.expr.Expr
+import org.jline.reader.{LineReader, LineReaderBuilder, UserInterruptException, EndOfFileException}
+import org.jline.terminal.{Terminal, TerminalBuilder}
 
 object Compiler:
   class ParseStep(config: CompilerConfig) extends CompilerStep[List[SourceFile], List[Syntax.Module]]:
@@ -162,17 +164,36 @@ object Compiler:
   def startRepl(): Unit =
     println("Welcome to Cavia REPL")
     println("Type ':quit' or press Ctrl+D to exit")
+    println("Use arrow keys to navigate and access history")
+    println("Right now, it only infers types of expressions")
+    println()
+
+    val terminal = TerminalBuilder.builder()
+      .system(true)
+      .build()
+
+    val reader = LineReaderBuilder.builder()
+      .terminal(terminal)
+      .option(LineReader.Option.HISTORY_IGNORE_DUPS, true)
+      .option(LineReader.Option.HISTORY_IGNORE_SPACE, true)
+      .build()
 
     def loop(): Unit =
-      print("cavia> ")
-      val input = scala.io.StdIn.readLine()
-      if input == null then
-        println("\nGoodbye!")
-      else if input == ":quit" || input == ":exit" then
-        println("Goodbye!")
-      else
-        println(input)
-        loop()
+      try
+        val input = reader.readLine("typeof> ")
+        if input == ":quit" || input == ":exit" || input == ":q" then
+          println("Goodbye!")
+          terminal.close()
+        else
+          println(input)
+          loop()
+      catch
+        case _: UserInterruptException =>
+          println()
+          loop()
+        case _: EndOfFileException =>
+          println("\nGoodbye!")
+          terminal.close()
 
     loop()
 
