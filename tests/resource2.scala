@@ -16,3 +16,4 @@ def main(): Unit =
   val p = ResourcePair(a, b)
   usePair(p)
   drop(p.a)
+  //use(a)

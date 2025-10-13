@@ -115,9 +115,9 @@ object Compiler:
   def run(action: CompilerAction): Unit =
     action match
       case CompilerAction.Help =>
-        println("Usage: cavia check <source files>")
-        println("       cavia gen <source files>")
-        println("       cavia compile <source files>")
+        println("Usage: caviac check <source files>")
+        println("       caviac gen <source files>")
+        println("       caviac compile <source files>")
       case CompilerAction.Check(sources, config) =>
         val sources1 = sources :+ stdlib
         val runner = ParseStep(config) `fuse` TypecheckStep(config) `fuse` PrintModulesStep("typecheck", config)
